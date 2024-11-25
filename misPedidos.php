@@ -260,10 +260,10 @@ $usuarioStmt->close();
 
                     // Consultar los detalles del pedido
                     $sql_detalle = "
-                        SELECT d.cantidad, p.nombre, d.precio, p.imagen
-                        FROM DetallePedido d
-                        JOIN productos p ON d.id_producto = p.id
-                        WHERE d.id_pedido = ?
+                        SELECT dp.cantidad, pr.nombre, pr.precio, pr.imagen 
+                        FROM DetallePedido dp
+                        JOIN productos pr ON dp.id_producto = pr.id
+                        WHERE dp.id_pedido = ?
                     ";
 
                     $stmt_detalle = $conexion->prepare($sql_detalle);
