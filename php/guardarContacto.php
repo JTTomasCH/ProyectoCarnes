@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -28,7 +27,7 @@ if ($stmt->execute()) {
     window.location.href = '../contacts.html';
 </script>";
 } else {
-    echo "<script>alert('Erro al  guardar datos'); window.location.href='../contacts.html'</script>";
+    echo "<script>alert('Error al  guardar datos'); window.location.href='../contacts.html'</script>";
 }
 
 // Cerrar conexión

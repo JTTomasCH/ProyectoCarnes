@@ -410,11 +410,11 @@
       <ul class="rd-navbar-nav">
         <li class="rd-nav-item "><a class="rd-nav-link" href="index.html">Inicio</a>
         </li>
-        <li class="rd-nav-item active"><a class="rd-nav-link" href="about-us.html">Sobre Nosotros
+        <li class="rd-nav-item"><a class="rd-nav-link" href="about-us.html">Sobre Nosotros
             </a></li>
         <li class="rd-nav-item"><a class="rd-nav-link" href="typography.html">Productos</a>
         </li>
-        <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contáctanos</a>
+        <li class="rd-nav-item active"><a class="rd-nav-link" href="contacts.html">Contáctanos</a>
         </li>
         <li class="rd-nav-item"><a class="rd-nav-link" href="Clientes.html">Nuestros
                 Clientes</a></li>
@@ -523,6 +523,12 @@
                     </div>
                     <button class="button button-secondary button-winona" type="submit">Contáctanos</button>
                      </form>
+                     <script>
+                      document.getElementById("contact-form").addEventListener("submit", function(event) {
+                          event.preventDefault();  // Prevent the form from submitting immediately
+                          alert("Datos guardados correctamente");
+                      });
+                  </script>
    </div>
             <div class="col-lg-4">
               <div class="aside-contacts">
