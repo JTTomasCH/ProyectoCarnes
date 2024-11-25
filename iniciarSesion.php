@@ -41,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         error_log("Valor de activo: " . $activo);
 
         if ($activo == 1 && password_verify($contrasena, $hashed_password)) {
-            $_SESSION['id'] = $id;
             $_SESSION['nombres'] = $nombres;
             $_SESSION['apellidos'] = $apellidos;
             $_SESSION['correo'] = $correo;
@@ -61,17 +60,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($correo === 'carnesbyr@gmail.com' && $id_cargo == 1) {
                 error_log("Redirigiendo a admin.php");
                 header("Location: ../admin.php");
-            } else {
-                error_log("Redirigiendo a index2.php");
-                header("Location: ../index2.php");
-            }
-
-            if ($correo === 'byrcarnes@gmail.com' && $id_cargo == 1 && $id == 72) {
-                error_log("Redirigiendo a admin.php");
+                exit();
+            } elseif ($correo === 'byrcarnes@gmail.com' && $id_cargo == 1) {
+                error_log("Redirigiendo a grafica.php");
                 header("Location: ../grafica.php");
+                exit();
             } else {
                 error_log("Redirigiendo a index2.php");
                 header("Location: ../index2.php");
+                exit();
             }
             exit();
         } else {
