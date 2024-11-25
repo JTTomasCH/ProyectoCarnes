@@ -695,7 +695,7 @@ $apellidos = $_SESSION['apellidos'];
       
       <div class="nav-actions">
         <h5><?php echo htmlspecialchars($nombres); ?></h5>
-        <a href="cerarSesion.php" class="login-button">Cerrar Sesión</a>
+        <a href="../cerarSesion.php" class="login-button">Cerrar Sesión</a>
         <div class="cart-container">
       <a href="cart.php" class="cart-button">
         <img src="../images/carro1.png" alt="Carrito"/>
