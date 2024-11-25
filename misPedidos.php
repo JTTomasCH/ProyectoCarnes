@@ -262,7 +262,7 @@ $usuarioStmt->close();
                     $sql_detalle = "
                         SELECT d.cantidad, p.nombre, d.precio, p.imagen
                         FROM DetallePedido d
-                        JOIN Producto p ON d.id_producto = p.id
+                        JOIN productos p ON d.id_producto = p.id
                         WHERE d.id_pedido = ?
                     ";
 
