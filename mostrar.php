@@ -67,7 +67,7 @@
                     <th>ID</th>
                     <th>Nombres</th>
                     <th>Correo</th>
-                    <th>FechaCreacion</th>
+                    <th>Fecha_horaCreacion</th>
                 </tr>
             </thead>
             <tbody>
