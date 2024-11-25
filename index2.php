@@ -419,7 +419,6 @@ $apellidos = $_SESSION['apellidos'];
                 </div>
     < <div class="rd-navbar-main">
     <ul class="rd-navbar-nav">
-    <a href="mostrar.php" class="login-button">Mosrtar Usuarios</a>
       <li class="rd-nav-item active"><a class="rd-nav-link" href="index2.php">Inicio</a></li>
       
       <li class="rd-nav-item"><a class="rd-nav-link" href="php/pr.php">Productos</a></li>
