@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restablecer Contraseña</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ff4c4c, #ffffff); /* Fondo degradado de rojo a blanco */
+            color: #333; /* Color del texto */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ocupa toda la altura de la ventana */
+        }
+
+        .container {
+            background-color: white; /* Fondo blanco para el contenedor */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            width: 300px; /* Ancho del contenedor */
+            display: flex; /* Usar flexbox para alinear verticalmente */
+            flex-direction: column; /* Apilar elementos en columna */
+            align-items: center; /* Centrar elementos en el eje horizontal */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px; /* Espacio debajo del título */
+        }
+
+        label {
+            display: block; /* Hace que cada etiqueta ocupe toda la línea */
+            margin-bottom: 5px; /* Espacio entre etiqueta y campo */
+            text-align: left; /* Alinear texto a la izquierda */
+            width: 100%; /* Ancho completo para etiquetas */
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 90%; /* Ocupa el 100% del ancho del formulario */
+            padding: 10px; /* Espacio dentro del campo */
+            margin-bottom: 15px; /* Espacio entre campos */
+            border: 1px solid #ccc; /* Borde gris claro */
+            border-radius: 5px; /* Bordes redondeados */
+        }
+
+        button {
+            background-color: #ff4c4c; /* Color de fondo rojo claro */
+            color: white; /* Texto blanco */
+            border: none; /* Sin borde */
+            padding: 10px; /* Espacio dentro del botón */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+            transition: background-color 0.3s; /* Transición suave al cambiar el color */
+            width: 98%; /* Ancho completo */
+        }
+
+        button:hover {
+            background-color: #ff3333; /* Color más oscuro al pasar el ratón */
+        }
+
+        a {
+            text-align: center; /* Centra el enlace */
+            margin-top: 15px; /* Espacio encima del enlace */
+            color: #ff4c4c; /* Color del enlace */
+            text-decoration: none; /* Sin subrayado */
+            width: 100%; /* Ancho completo para el enlace */
+            display: block; /* Hace que el enlace ocupe toda la línea */
+        }
+
+        a:hover {
+            text-decoration: underline; /* Subraya el enlace al pasar el ratón */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Restablecer Contraseña</h1>
+        <form action="php/nueva.php" method="post">
+            <label for="email">Correo electrónico:</label>
+            <input type="email" id="email" name="correo" value="usuario@example.com" required>
+            
+            <label for="nuevaContraseña">Nueva Contraseña:</label>
+            <input type="password" id="nuevaContraseña" name="nuevaContraseña" required>
+            
+            <label for="confirmarContraseña">Confirmar Nueva Contraseña:</label>
+            <input type="password" id="confirmarContraseña" name="confirmarContraseña" required>
+            
+            <button type="submit">Restablecer Contraseña</button>
+        </form>
+        <a href="iniciarSesion.html">Volver a iniciar sesión</a>
+    </div>
+</body>
+</html>
