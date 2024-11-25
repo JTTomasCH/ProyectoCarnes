@@ -115,66 +115,483 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_id']) && isset
 
 $conexion->close();
 ?>
-
 <!DOCTYPE html>
-<html lang="es">
+<html class="wide wow-animation" lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="images/icono.jpeg" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:100,300,300i,400,500,600,700,900%7CRaleway:500">
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="../css/fonts.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/estilos.css">
-    <title>Carrito de Compras</title>
-     <style>
-    .rd-navbar-nav {
-      display: flex;
-      align-items: center;
+  <title>Productos</title>
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport"
+    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta charset="utf-8">
+  <link rel="icon" href="images/icono.jpeg" type="image/x-icon">
+  <!-- Stylesheets-->
+  <link rel="stylesheet" type="text/css"
+    href="//fonts.googleapis.com/css?family=Roboto:100,300,300i,400,500,600,700,900%7CRaleway:500">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/bootstrap.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link rel="stylesheet" href="../css/estilos.css">
+   <style>
+/* Estilos mejorados para el menú de navegación */
+.rd-navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.rd-nav-item {
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.rd-nav-link {
+  position: relative;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #151515;
+  transition: all 0.3s ease;
+}
+
+.rd-nav-link:hover {
+  color: #ff4c4c;
+}
+
+/* Estilos para el dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropbtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #151515;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropbtn:hover {
+  color: #ff4c4c;
+}
+
+.arrow-icon {
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+  margin-top: -4px;
+}
+
+.arrow-rotate {
+  transform: rotate(135deg);
+  margin-top: 2px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-top: 15px;
+}
+
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #ffffff;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 12px 24px;
+  color: #151515;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+  background-color: #f8f9fa;
+  color: #ff4c4c;
+  padding-left: 28px;
+}
+
+.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Estilos mejorados para las acciones de navegación */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: 30px;
+  padding-left: 30px;
+  border-left: 1px solid rgba(21, 21, 21, 0.1);
+}
+
+.nav-actions h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #151515;
+}
+
+.login-button {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  background-color: #ff4c4c;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.login-button:hover {
+  background-color: #ff3333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
+}
+
+/* Estilos actualizados para el carrito */
+.cart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.cart-button:hover {
+  background-color: #ff4c4c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 76, 76, 0.2);
+}
+
+.cart-button img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+  margin: auto;
+}
+
+.cart-button:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4c4c;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Estilos para el botón de Mis Pedidos */
+.btn-pedidos {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #151515;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.btn-pedidos:hover {
+  background-color: #ff4c4c;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
+}
+
+/* Asegurarse que el contenedor de navegación tenga el z-index correcto */
+.rd-navbar-main {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 1200px) {
+  .rd-navbar-main {
+    padding: 0 1rem;
+  }
+  
+  .nav-actions {
+    gap: 1rem;
+    margin-left: 1rem;
+    padding-left: 1rem;
+  }
+  
+  .login-button,
+  .btn-pedidos {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .cart-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 992px) {
+  .rd-navbar-nav {
+    gap: 15px;
+  }
+  
+  .nav-actions {
+    gap: 10px;
+    margin-left: 15px;
+    padding-left: 15px;
+  }
+  
+  .nav-actions h5 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rd-navbar-main {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .rd-navbar-nav {
+    margin-bottom: 10px;
+  }
+  
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 0;
+    border-left: none;
+    border-top: 1px solid rgba(21, 21, 21, 0.1);
+  }
+}
+  </style>
+  <style>
+
+
+    .productos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .productos {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 20px;
+      justify-content: center;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    .nav-actions {
+    .producto {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      text-align: center;
+      transition: transform 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: white;
+    }
+
+    .producto:hover {
+      transform: scale(1.02);
+    }
+
+    .producto img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .producto h7 {
+      font-size: 1.1rem;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .producto p {
+      margin: 8px 0;
+      color: #666;
+    }
+
+    .producto form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .cantidad-container {
       display: flex;
       align-items: center;
-      gap: 15px;
-      margin-left: 20px;
+      justify-content: center;
+      gap: 5px;
+      margin: 10px 0;
     }
 
-    .cart-button {
-      padding: 20px 16px;
+    input[type="number"] {
+      width: 60px;
+      height: 30px;
+      text-align: center;
+      border: 1px solid #ddd;
       border-radius: 4px;
-      text-decoration: none;
-      color: white;
+      padding: 0 5px;
+      font-size: 0.9rem;
+    }
+
+    .cantidad-btn {
       background-color: #ff4c4c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: background-color 0.3s;
     }
 
-    .cart-button img {
-      max-width: 100%;
-      max-height: 100%;
+    .cantidad-btn:hover {
+      background-color: #ff3333;
     }
 
-    .cart-button:hover {
-      background-color: #ffab6a;
-      color: rgb(11, 11, 11);
-    }
-
-    .login-button {
+    .agregar-carrito {
+      background-color: #ff4c4c;
+      color: white;
       padding: 8px 16px;
+      border: none;
       border-radius: 4px;
-      text-decoration: none;
-      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 80%;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .agregar-carrito:hover {
+      background-color: #ff3333;
+    }
+
+    @media (max-width: 1200px) {
+      .productos {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .productos {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .productos {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .agregar-carrito {
       background-color: #ff4c4c;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
       transition: background-color 0.3s;
     }
 
-    .login-button:hover {
-      background-color: #ffab6a;
-      color: rgb(15, 15, 15);
+    .agregar-carrito:hover {
+      background-color: #ff3333;
     }
 
     @media (max-width: 768px) {
@@ -188,231 +605,701 @@ $conexion->close();
       }
     }
 
-    /* Estilos básicos de la página */
-    .container {
-      max-width: 1000px;
-      background-color: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    .rd-navbar-nav {
       display: flex;
+      align-items: center;
       gap: 20px;
     }
 
-    /* Sección de carrito */
-    .cart-section {
-      flex: 2;
-    }
-
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ddd;
-      padding: 15px 0;
-    }
-
-    .cart-item img {
-      width: 70px;
-      height: 70px;
-      border-radius: 5px;
-      margin-right: 15px;
-    }
-
-    .product-details {
+    .nav-actions {
       display: flex;
       align-items: center;
       gap: 15px;
+      margin-left: 20px;
     }
 
-    .product-info {
-      display: flex;
-      flex-direction: column;
-    }
+    @media (max-width: 768px) {
+      .rd-navbar-nav {
+        flex-direction: column;
+      }
 
-    .quantity-control {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
+      .nav-actions {
+        margin-left: 0;
+        margin-top: 10px;
+      }
 
-    .quantity-control input {
-      width: 40px;
-      text-align: center;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-    }
-
-    .delete-btn {
-      cursor: pointer;
-      color: #ff4c4c;
-      font-size: 18px;
-    }
-
-    /* Sección de resumen */
-    .summary-section {
-      flex: 1;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    .summary-section h3 {
-      margin-bottom: 20px;
-      color: #333;
-    }
-
-    .summary-item {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      font-size: 16px;
-      color: #555;
-    }
-
-    .total {
-      font-weight: bold;
-      font-size: 18px;
-      color: #333;
-      margin-top: 20px;
-    }
-
-    .checkout-btn {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-      text-align: center;
-      background-color: #ff4c4c;
-      color: white;
-      font-weight: bold;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .checkout-btn:hover {
-      background-color: #ff3333;
-    }
-
-
-    .continue-shopping-btn {
-      display: inline-block;
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #ff4c4c;
-      background-color: transparent;
-      border: 2px solid #ff4c4c;
-      border-radius: 4px;
-      text-decoration: none;
-      text-align: center;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* Efecto hover */
-    .continue-shopping-btn:hover {
-      background-color: #ff4c4c;
-      color: white;
-    }
   </style>
 </head>
+
 <body>
-    <div class="preloader">
-      <div class="wrapper-triangle">
-        <div class="pen">
-          <div class="line-triangle">
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-          </div>
-          <div class="line-triangle">
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-          </div>
-           <div class="line-triangle">
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-            <div class="triangle"></div>
-          </div>
+  <div class="preloader">
+    <div class="wrapper-triangle">
+      <div class="pen">
+        <div class="line-triangle">
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+        </div>
+        <div class="line-triangle">
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+        </div>
+        <div class="line-triangle">
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
+          <div class="triangle"></div>
         </div>
       </div>
     </div>
-    </div>
-    <div class="page">
-       <!-- Page Header-->
+  </div>
+  <div class="page">
+    <!-- Page Header-->
     <header class="section page-header">
-        <!-- RD Navbar-->
-        <div class="rd-navbar-wrap">
-            <nav class="rd-navbar rd-navbar-modern">
-                <div class="rd-navbar-inner-outer">
-                    <div class="rd-navbar-inner">
-                        <!-- RD Navbar Panel-->
-                        <div class="rd-navbar-panel">
-                            <!-- RD Navbar Toggle-->
-                            <button class="rd-navbar-toggle"
-                                data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
-                            <!-- RD Navbar Brand-->
-                            <div class="rd-navbar-brand">
-                                <a class="brand" href="../index2.php">
-                                    <img class="brand-logo-dark" src="../logoC.png" alt="" width="198" height="66" />
-                                </a>
-                            </div>
-                        </div>
-                        <div class="rd-navbar-right rd-navbar-nav-wrap">
-                            <div class="rd-navbar-aside">
-                                <ul class="rd-navbar-contacts-2">
-                                    <!-- Información de contacto y redes sociales -->
-                                </ul>
-                                <ul class="list-share-2">
-                                    <!-- Redes sociales -->
-                                </ul>
-                            </div>
-                            <div class="rd-navbar-main">
-                                <!-- RD Navbar Nav-->
-                                <ul class="rd-navbar-nav">
-                                    <li class="rd-nav-item active"><a class="rd-nav-link" href="../index2.php">Inicio</a>
-                                    </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="../about2.php">Sobre Nosotros
-                                        </a></li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="pr.php">Productos</a>
-                                    </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="../contactanos2.php">Contáctanos</a>
-                                    </li>
-                                    <li class="rd-nav-item"><a class="rd-nav-link" href="../Clientes.html">Nuestros
-                                            Clientes</a></li>
-                                    <div class="nav-actions">
-                                         <h5><?php echo htmlspecialchars($nombres . ' ' . $apellidos); ?></h5>
-                                        <a href="../iniciarSesion.html" class="btn btn-primary login-button">Cerrar
-                                            Sesión</a>
-                                        <a href="../iniciarSesion.html" class="cart-button">
-                                            <img src="../images/carro1.png" width="20" height="20" alt="Carrito" />
-                                        </a>
-                                    </div>
-
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+      <!-- RD Navbar-->
+      <div class="rd-navbar-wrap">
+        <nav class="rd-navbar rd-navbar-modern" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed"
+          data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static"
+          data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static"
+          data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static"
+          data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="56px" data-xl-stick-up-offset="56px"
+          data-xxl-stick-up-offset="56px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+          <div class="rd-navbar-inner-outer">
+            <div class="rd-navbar-inner">
+              <!-- RD Navbar Panel-->
+              <div class="rd-navbar-panel">
+                <!-- RD Navbar Toggle-->
+                <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                <!-- RD Navbar Brand-->
+                <div class="rd-navbar-brand"><a class="brand" href="../index.html"><img class="brand-logo-dark"
+                      src="../images/logoC.png" alt="" width="198" height="66" /></a></div>
+              </div>
+              <div class="rd-navbar-right rd-navbar-nav-wrap">
+                <div class="rd-navbar-aside">
+                  <ul class="rd-navbar-contacts-2">
+                    <li>
+                      <div class="unit unit-spacing-xs">
+                        <div class="unit-left"><span class="icon mdi mdi-phone"></span></div>
+                        <div class="unit-body"><a class="phone" href="tel:#">+57 3182575587</a></div>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="unit unit-spacing-xs">
+                        <div class="unit-left"><span class="icon mdi mdi-map-marker"></span></div>
+                        <div class="unit-body"><a class="address" href="#">Calle 79b#70A-31</a></div>
+                      </div>
+                    </li>
+                  </ul>
+                  <ul class="list-share-2">
+                    <li><a class="icon mdi mdi-facebook" href="#"></a></li>
+                    <li><a class="icon mdi mdi-twitter" href="#"></a></li>
+                    <li><a class="icon mdi mdi-instagram" href="#"></a></li>
+                    <li><a class="icon mdi mdi-google-plus" href="#"></a></li>
+                  </ul>
                 </div>
-            </nav>
+                < <div class="rd-navbar-main">
+    <ul class="rd-navbar-nav">
+      <li class="rd-nav-item "><a class="rd-nav-link" href="../index2.php">Inicio</a></li>
+      
+      <li class="rd-nav-item "><a class="rd-nav-link" href="pr.php">Productos</a></li>
+      <li class="rd-nav-item"><a class="rd-nav-link" href="../contactanos2.php">Contáctanos</a></li>
+       <a href="../misPedidos.php" class="btn-pedidos">Mis Pedidos</a>
+           <li class="rd-nav-item dropdown">
+        <button onclick="toggleDropdown()" class="dropbtn">
+          Más <span class="arrow-icon" id="arrow"></span>
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+          <a href="../about2.php">Sobre Nosotros</a>
+          <a href="Clientes.php">Nuestros Clientes</a>
         </div>
+      </li>
+      
+      <div class="nav-actions">
+        <h5><?php echo htmlspecialchars($nombres); ?></h5>
+        <a href="../cerarSesion.php" class="login-button">Cerrar Sesión</a>
+        <div class="cart-container">
+      <a href="cart.php" class="cart-button">
+        <img src="../images/carro1.png" alt="Carrito"/>
+      </a>
+      </div>
+    </ul>
+  </div>
     </header>
+     <style>
+    /* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Cart section styles */
+.cart-section {
+    padding: 20px;
+}
+
+.cart-section h2 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 10px;
+}
+
+.cart-item {
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: transform 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.cart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+
+
+.product-info {
+    flex-grow: 1;
+}
+
+.product-info p {
+    margin: 5px 0;
+}
+
+.product-info strong {
+    font-size: 1.1em;
+    color: #2c3e50;
+}
+
+/* Quantity controls */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.2s;
+}
+
+.quantity-btn:hover {
+    background-color: #c0392b;
+}
+
+.quantity-input {
+    width: 50px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+/* Summary section styles */
+.summary-section {
+    background-color: #f8f9fa;
+    padding: 25px;
+    border-radius: 8px;
+    position: sticky;
+    top: 20px;
+}
+
+.summary-section h3 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 10px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #2c3e50;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #2c3e50;
+}
+
+/* Buttons */
+.checkout-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    width: 100%;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 20px;
+}
+
+.checkout-btn:hover {
+    background-color: #c0392b;
+}
+
+.continue-shopping-btn {
+    display: inline-block;
+    text-decoration: none;
+    color: #2c3e50;
+    padding: 12px 25px;
+    border: 2px solid #2c3e50;
+    border-radius: 25px;
+    margin-top: 30px;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.continue-shopping-btn:hover {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+
+/* Empty cart message */
+.cart-section p:empty + p {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    color: #7f8c8d;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-details {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .quantity-control {
+        justify-content: center;
+    }
+}
+  </style>
+  <style>
+/* Estilos mejorados para el menú de navegación */
+.rd-navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.rd-nav-item {
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.rd-nav-link {
+  position: relative;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #151515;
+  transition: all 0.3s ease;
+}
+
+.rd-nav-link:hover {
+  color: #ff4c4c;
+}
+
+/* Estilos para el dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropbtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #151515;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropbtn:hover {
+  color: #ff4c4c;
+}
+
+.arrow-icon {
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+  margin-top: -4px;
+}
+
+.arrow-rotate {
+  transform: rotate(135deg);
+  margin-top: 2px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-top: 15px;
+}
+
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #ffffff;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 12px 24px;
+  color: #151515;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+  background-color: #f8f9fa;
+  color: #ff4c4c;
+  padding-left: 28px;
+}
+
+.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Estilos mejorados para las acciones de navegación */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: 30px;
+  padding-left: 30px;
+  border-left: 1px solid rgba(21, 21, 21, 0.1);
+}
+
+.nav-actions h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #151515;
+}
+
+.login-button {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  background-color: #ff4c4c;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.login-button:hover {
+  background-color: #ff3333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
+}
+
+/* Estilos actualizados para el carrito */
+.cart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.cart-button:hover {
+  background-color: #ff4c4c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 76, 76, 0.2);
+}
+
+.cart-button img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+  margin: auto;
+}
+
+.cart-button:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4c4c;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Estilos para el botón de Mis Pedidos */
+.btn-pedidos {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #151515;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.btn-pedidos:hover {
+  background-color: #ff4c4c;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
+}
+
+/* Asegurarse que el contenedor de navegación tenga el z-index correcto */
+.rd-navbar-main {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 1200px) {
+  .rd-navbar-main {
+    padding: 0 1rem;
+  }
+  
+  .nav-actions {
+    gap: 1rem;
+    margin-left: 1rem;
+    padding-left: 1rem;
+  }
+  
+  .login-button,
+  .btn-pedidos {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .cart-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 992px) {
+  .rd-navbar-nav {
+    gap: 15px;
+  }
+  
+  .nav-actions {
+    gap: 10px;
+    margin-left: 15px;
+    padding-left: 15px;
+  }
+  
+  .nav-actions h5 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rd-navbar-main {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .rd-navbar-nav {
+    margin-bottom: 10px;
+  }
+  
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 0;
+    border-left: none;
+    border-top: 1px solid rgba(21, 21, 21, 0.1);
+  }
+}
+  </style>
+    <script>
+    function toggleDropdown() {
+      document.getElementById("myDropdown").classList.toggle("show");
+      document.getElementById("arrow").classList.toggle("arrow-rotate");
+    }
+
+    // Cerrar el dropdown si el usuario hace clic fuera de él
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn') && !event.target.matches('.arrow-icon')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var arrows = document.getElementsByClassName("arrow-icon");
+        
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+        
+        for (var i = 0; i < arrows.length; i++) {
+          var arrow = arrows[i];
+          if (arrow.classList.contains('arrow-rotate')) {
+            arrow.classList.remove('arrow-rotate');
+          }
+        }
+      }
+    }
+  </script>
+   <body>
+      <main>
         
         <div class="container">
             <div class="cart-section">

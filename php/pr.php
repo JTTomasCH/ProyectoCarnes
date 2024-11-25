@@ -100,7 +100,320 @@ $apellidos = $_SESSION['apellidos'];
   <link rel="stylesheet" href="../css/bootstrap.css">
   <link rel="stylesheet" href="../css/fonts.css">
   <link rel="stylesheet" href="../css/estilos.css">
+   <style>
+/* Estilos mejorados para el menú de navegación */
+.rd-navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.rd-nav-item {
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.rd-nav-link {
+  position: relative;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #151515;
+  transition: all 0.3s ease;
+}
+
+.rd-nav-link:hover {
+  color: #ff4c4c;
+}
+
+/* Estilos para el dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropbtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 15px;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #151515;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropbtn:hover {
+  color: #ff4c4c;
+}
+
+.arrow-icon {
+  width: 8px;
+  height: 8px;
+  border-left: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+  margin-top: -4px;
+}
+
+.arrow-rotate {
+  transform: rotate(135deg);
+  margin-top: 2px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 200px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  padding: 8px 0;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-top: 15px;
+}
+
+.dropdown-content::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #ffffff;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 12px 24px;
+  color: #151515;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 400;
+  transition: all 0.3s ease;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.dropdown-content a:hover {
+  background-color: #f8f9fa;
+  color: #ff4c4c;
+  padding-left: 28px;
+}
+
+.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Estilos mejorados para las acciones de navegación */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-left: 30px;
+  padding-left: 30px;
+  border-left: 1px solid rgba(21, 21, 21, 0.1);
+}
+
+.nav-actions h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: #151515;
+}
+
+.login-button {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: white;
+  background-color: #ff4c4c;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.login-button:hover {
+  background-color: #ff3333;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
+}
+
+/* Estilos actualizados para el carrito */
+.cart-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.cart-button:hover {
+  background-color: #ff4c4c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 76, 76, 0.2);
+}
+
+.cart-button img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: filter 0.3s ease;
+  margin: auto;
+}
+
+.cart-button:hover img {
+  filter: brightness(0) invert(1);
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4c4c;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Estilos para el botón de Mis Pedidos */
+.btn-pedidos {
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  color: #151515;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.btn-pedidos:hover {
+  background-color: #ff4c4c;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 76, 76, 0.2);
+}
+
+/* Asegurarse que el contenedor de navegación tenga el z-index correcto */
+.rd-navbar-main {
+  position: relative;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+/* Media queries para responsividad */
+@media (max-width: 1200px) {
+  .rd-navbar-main {
+    padding: 0 1rem;
+  }
+  
+  .nav-actions {
+    gap: 1rem;
+    margin-left: 1rem;
+    padding-left: 1rem;
+  }
+  
+  .login-button,
+  .btn-pedidos {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .cart-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+@media (max-width: 992px) {
+  .rd-navbar-nav {
+    gap: 15px;
+  }
+  
+  .nav-actions {
+    gap: 10px;
+    margin-left: 15px;
+    padding-left: 15px;
+  }
+  
+  .nav-actions h5 {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rd-navbar-main {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .rd-navbar-nav {
+    margin-bottom: 10px;
+  }
+  
+  .nav-actions {
+    width: 100%;
+    justify-content: center;
+    margin: 0;
+    padding: 10px 0;
+    border-left: none;
+    border-top: 1px solid rgba(21, 21, 21, 0.1);
+  }
+}
+  </style>
   <style>
+
+
     .productos {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -272,39 +585,6 @@ $apellidos = $_SESSION['apellidos'];
       margin-left: 20px;
     }
 
-    .cart-button {
-      padding: 20px 16px;
-      border-radius: 4px;
-      text-decoration: none;
-      color: white;
-      background-color: #ff4c4c;
-      transition: background-color 0.3s;
-    }
-
-    .cart-button img {
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-    .cart-button:hover {
-      background-color: #ffab6a;
-      color: rgb(11, 11, 11);
-    }
-
-    .login-button {
-      padding: 8px 16px;
-      border-radius: 4px;
-      text-decoration: none;
-      color: white;
-      background-color: #ff4c4c;
-      transition: background-color 0.3s;
-    }
-
-    .login-button:hover {
-      background-color: #ffab6a;
-      color: rgb(15, 15, 15);
-    }
-
     @media (max-width: 768px) {
       .rd-navbar-nav {
         flex-direction: column;
@@ -314,7 +594,7 @@ $apellidos = $_SESSION['apellidos'];
         margin-left: 0;
         margin-top: 10px;
       }
-    }
+
   </style>
 </head>
 
@@ -396,31 +676,62 @@ $apellidos = $_SESSION['apellidos'];
                     <li><a class="icon mdi mdi-google-plus" href="#"></a></li>
                   </ul>
                 </div>
-                <div class="rd-navbar-main">
-                  <!-- RD Navbar Nav-->
-                  <ul class="rd-navbar-nav">
-                    <li class="rd-nav-item "><a class="rd-nav-link" href="../index2.php">Inicio</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="../about2.php">Sobre Nosotros</a></li>
-                    <li class="rd-nav-item active"><a class="rd-nav-link" href="pr.php">Productos</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="../contactanos2.php">Contáctanos</a></li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="Clientes.php">Nuestros
-                                            Clientes</a></li>
-
-                    <div class="nav-actions">
-                      <h5><?php echo htmlspecialchars($nombres); ?></h5>
-                      <a href="../cerarSesion.php" class="btn btn-primary login-button">Cerrar sesion</a>
-                        <a href="cart.php" class="cart-button">
-                          <img src="../images/carro1.png" width="20" height="20" alt="Carrito" />
-                        </a>
-                      </div>
-                    </div>
-                </div>
-                </ul>
-              </div>
-              </ul>
-            </div>
-          </div>
+                < <div class="rd-navbar-main">
+    <ul class="rd-navbar-nav">
+      <li class="rd-nav-item "><a class="rd-nav-link" href="../index2.php">Inicio</a></li>
+      
+      <li class="rd-nav-item active"><a class="rd-nav-link" href="pr.php">Productos</a></li>
+      <li class="rd-nav-item"><a class="rd-nav-link" href="../contactanos2.php">Contáctanos</a></li>
+       <a href="../misPedidos.php" class="btn-pedidos">Mis Pedidos</a>
+           <li class="rd-nav-item dropdown">
+        <button onclick="toggleDropdown()" class="dropbtn">
+          Más <span class="arrow-icon" id="arrow"></span>
+        </button>
+        <div id="myDropdown" class="dropdown-content">
+          <a href="../about2.php">Sobre Nosotros</a>
+          <a href="Clientes.php">Nuestros Clientes</a>
+        </div>
+      </li>
+      
+      <div class="nav-actions">
+        <h5><?php echo htmlspecialchars($nombres); ?></h5>
+        <a href="cerarSesion.php" class="login-button">Cerrar Sesión</a>
+        <div class="cart-container">
+      <a href="cart.php" class="cart-button">
+        <img src="../images/carro1.png" alt="Carrito"/>
+      </a>
+      </div>
+    </ul>
+  </div>
     </header>
+    <script>
+    function toggleDropdown() {
+      document.getElementById("myDropdown").classList.toggle("show");
+      document.getElementById("arrow").classList.toggle("arrow-rotate");
+    }
+
+    // Cerrar el dropdown si el usuario hace clic fuera de él
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropbtn') && !event.target.matches('.arrow-icon')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var arrows = document.getElementsByClassName("arrow-icon");
+        
+        for (var i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
+        
+        for (var i = 0; i < arrows.length; i++) {
+          var arrow = arrows[i];
+          if (arrow.classList.contains('arrow-rotate')) {
+            arrow.classList.remove('arrow-rotate');
+          }
+        }
+      }
+    }
+  </script>
 
     <body>
       <main>
