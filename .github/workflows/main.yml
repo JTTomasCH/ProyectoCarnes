@@ -1,0 +1,28 @@
+on: 
+  push:
+    branches:
+      - main
+name: 🚀 Deploy website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v3
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.FTP_SERVER_INSCRIPCIONES_EA }}
+        username: ${{ secrets.FTP_USERNAME_INSCRIPCIONES_EA }}
+        password: ${{ secrets.FTP_PASSWORD_INSCRIPCIONES_EA }}
+        server-dir: /httpdocs/
+        protocol: ftps
+        port: 21
+        exclude: |
+          **/plataform/lib/Excel/**
+          **/plataform/assets/**
+          **/plataform/fckeditor/**
+          **/plataform/js/fckeditor/**
+          plataform/config.inc.php
