@@ -54,26 +54,22 @@ $usuarioStmt->close();
             WHERE p.id_cliente = ?
             ORDER BY p.id DESC
         ";
-
+    
         $stmt_pedidos = $conexion->prepare($sql_pedidos);
         $stmt_pedidos->bind_param("i", $id); // Usamos el ID del usuario logueado
         $stmt_pedidos->execute();
         $stmt_pedidos->bind_result($pedido_id, $fecha_pedido, $metodo_pago);
-
+    
         $hayPedidos = false;
-
-        // Verificar si hay pedidos
+    
+        // Procesar pedidos
         while ($stmt_pedidos->fetch()) {
             $hayPedidos = true;
             echo "<div class='pedido'>";
             echo "<h3>Pedido ID: " . $pedido_id . "</h3>";
             echo "<p class='fecha'>Fecha del pedido: " . $fecha_pedido . "</p>";
             echo "<p class='metodo_pago'>Método de pago: " . $metodo_pago . "</p>";
-
-            // Inicializar variable para el total del pedido
-            $total_pedido = 0;
-            $cantidad_total = 0;
-
+    
             // Consulta para obtener los detalles de cada pedido
             $sql_detalle = "
                 SELECT dp.cantidad, pr.nombre, pr.precio, pr.imagen 
@@ -81,24 +77,24 @@ $usuarioStmt->close();
                 JOIN productos pr ON dp.id_producto = pr.id
                 WHERE dp.id_pedido = ?
             ";
-
+    
             $stmt_detalle = $conexion->prepare($sql_detalle);
             $stmt_detalle->bind_param("i", $pedido_id);
             $stmt_detalle->execute();
             $stmt_detalle->bind_result($cantidad, $nombre, $precio, $imagen);
-
+    
             // Mostrar los detalles del pedido y calcular el total
             echo "<div class='detalle'>";
+            $total_pedido = 0;
+            $cantidad_total = 0;
             while ($stmt_detalle->fetch()) {
-                $total_pedido += $cantidad * $precio;  // Calcular el total
-                $cantidad_total += $cantidad;  // Contar la cantidad total de productos
-
+                $total_pedido += $cantidad * $precio;
+                $cantidad_total += $cantidad;
+    
                 echo "<div class='producto-info'>";
                 echo "<div>Producto: " . $nombre . "</div>";
                 echo "<div>Cantidad: " . $cantidad . "</div>";
                 echo "<div>Precio: " . number_format($precio, 2) . "</div>";
-
-                // Verificar si la imagen existe y es válida
                 if ($imagen) {
                     echo "<div><img src='data:image/jpeg;base64," . base64_encode($imagen) . "' alt='" . $nombre . "' /></div>";
                 } else {
@@ -107,25 +103,25 @@ $usuarioStmt->close();
                 echo "</div>";
             }
             echo "</div>";
-
-            // Libera los resultados y cierra el statement
+    
+            // Cierra la consulta de detalles
             $stmt_detalle->free_result();
             $stmt_detalle->close();
-
+    
             // Si la cantidad total es menor a 7, sumar 30,000 al total
             if ($cantidad_total < 7) {
                 $total_pedido += 30000;
             }
-
+    
             echo "<p class='total'>Total del pedido: " . number_format($total_pedido, 2) . "</p>";
             echo "</div>";
         }
-
+    
         if (!$hayPedidos) {
             echo "<p class='no-pedidos'>No hay pedidos para este usuario</p>";
         }
-
-        // Libera los resultados y cierra el statement de pedidos
+    
+        // Cierra la consulta de pedidos
         $stmt_pedidos->free_result();
         $stmt_pedidos->close();
     } else {
