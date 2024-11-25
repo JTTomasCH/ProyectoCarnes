@@ -391,7 +391,7 @@ $apellidos = $_SESSION['apellidos'];
                 <!-- RD Navbar Toggle-->
                 <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                 <!-- RD Navbar Brand-->
-                <div class="rd-navbar-brand"><a class="brand" href="index2.php"><img class="brand-logo-dark"
+                <div class="rd-navbar-brand"><a class="brand" href="../index2.php"><img class="brand-logo-dark"
                       src="../logoC.png" alt="" width="198" height="66" /></a></div>
               </div>
               <div class="rd-navbar-right rd-navbar-nav-wrap">
