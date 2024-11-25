@@ -59,7 +59,6 @@
 <body>
     <div class="user-management">
         <h2>Gestión de Usuarios</h2>
-        <a href="agregar_usuario.php" class="btn2" onclick="return confirm('¿Deseas agregar un nuevo usuario?');">AGREGAR UN NUEVO USUARIO</a>
         
         <!-- Tabla de Usuarios -->
         <table>
@@ -68,6 +67,7 @@
                     <th>ID</th>
                     <th>Nombres</th>
                     <th>Correo</th>
+                    <th>FechaCreacion</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,7 +82,7 @@
                 }
 
                 // Consulta de usuarios
-                $consulta = "SELECT id, nombres, apellidos, correo, telefono, activo FROM usuarios";
+                $consulta = "SELECT id, nombres, apellidos, correo, telefono, activo, fecha_creacion FROM usuarios";
                 $resultado = $conexion->query($consulta);
 
                 if ($resultado->num_rows > 0) {
@@ -91,6 +91,7 @@
                         <td>{$usuario['id']}</td>
                         <td>{$usuario['nombres']}</td>
                         <td>{$usuario['correo']}</td>
+                        <td>{$usuario['fecha_creacion']}</td>
                     </tr>";
                     }
                 } else {
