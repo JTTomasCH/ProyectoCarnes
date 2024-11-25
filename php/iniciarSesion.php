@@ -55,14 +55,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $updateStmt->close();
 
             error_log("Inicio de sesión exitoso para el correo: $correo");
-
             // Redirigir a la página específica
             if ($correo === 'carnesbyr@gmail.com' && $id_cargo == 1) {
                 error_log("Redirigiendo a admin.php");
                 header("Location: ../admin.php");
+                exit();
+            } elseif ($correo === 'byrcarnes@gmail.com' && $id_cargo == 1) {
+                
+                error_log("Redirigiendo a grafica.php");
+                header("Location: ../grafica.php");
+                exit();
             } else {
                 error_log("Redirigiendo a index2.php");
                 header("Location: ../index2.php");
+                exit();
             }
             exit();
         } else {
