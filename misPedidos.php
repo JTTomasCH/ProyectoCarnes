@@ -318,7 +318,7 @@ $usuarioStmt->close();
         }
         ?>
 
-        <a href="index.php" class="btn-volver">Volver al inicio</a>
+        <a href="index2.php" class="btn-volver">Volver al inicio</a>
 
     </div>
 
