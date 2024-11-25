@@ -233,98 +233,90 @@ $usuarioStmt->close();
 
     <div class="container">
 
-    <?php
-if ($usuarioLogueado) {
-    // Consulta para obtener todos los pedidos del usuario en orden descendente por ID, junto con el número de pedido, método de pago y fecha
-    $sql_pedidos = "
-        SELECT p.id AS pedido_id, o.fecha, m.Descripcion AS metodo_pago
-        FROM Pedido p
-        JOIN OrdenPago o ON p.id = o.id_pedido
-        JOIN MetodoPago m ON o.id_metodopago = m.ID
-        WHERE p.id_cliente = ?
-        ORDER BY p.id DESC
-    ";
+        <?php
+        if ($usuarioLogueado) {
+            // Consulta para obtener todos los pedidos del usuario en orden descendente por ID, junto con el número de pedido, método de pago y fecha
+            $sql_pedidos = "
+                SELECT p.id AS pedido_id, o.fecha, m.Descripcion AS metodo_pago
+                FROM Pedido p
+                JOIN OrdenPago o ON p.id = o.id_pedido
+                JOIN MetodoPago m ON o.id_metodopago = m.ID
+                WHERE p.id_cliente = ?
+                ORDER BY p.id DESC
+            ";
 
-    $stmt_pedidos = $conexion->prepare($sql_pedidos);
-    $stmt_pedidos->bind_param("i", $id); // Usamos el ID del usuario logueado
-    $stmt_pedidos->execute();
-    $stmt_pedidos->bind_result($pedido_id, $fecha_pedido, $metodo_pago);
+            $stmt_pedidos = $conexion->prepare($sql_pedidos);
+            $stmt_pedidos->bind_param("i", $id); // Usamos el ID del usuario logueado
+            $stmt_pedidos->execute();
+            $stmt_pedidos->store_result(); // Usamos store_result() para poder acceder a los datos sin get_result()
 
-    $hayPedidos = false;
+            // Verificar si hay pedidos
+            if ($stmt_pedidos->num_rows > 0) {
+                // Mostrar todos los pedidos con detalles
+                $stmt_pedidos->bind_result($pedido_id, $fecha_pedido, $metodo_pago);
+                while ($stmt_pedidos->fetch()) {
+                    $total_pedido = 0;
+                    $cantidad_total = 0;
 
-    // Verificar si hay pedidos
-    while ($stmt_pedidos->fetch()) {
-        $hayPedidos = true;
+                    // Consultar los detalles del pedido
+                    $sql_detalle = "
+                        SELECT d.cantidad, p.nombre, d.precio, p.imagen
+                        FROM DetallePedido d
+                        JOIN Producto p ON d.id_producto = p.id
+                        WHERE d.id_pedido = ?
+                    ";
 
-        echo "<div class='pedido'>";
-        echo "<h3>Pedido ID: " . $pedido_id . "</h3>";
-        echo "<p class='fecha'>Fecha del pedido: " . $fecha_pedido . "</p>";
-        echo "<p class='metodo_pago'>Método de pago: " . $metodo_pago . "</p>";
+                    $stmt_detalle = $conexion->prepare($sql_detalle);
+                    $stmt_detalle->bind_param("i", $pedido_id);
+                    $stmt_detalle->execute();
+                    $stmt_detalle->store_result();
+                    $stmt_detalle->bind_result($cantidad, $nombre_producto, $precio, $imagen);
 
-        // Inicializar variable para el total del pedido
-        $total_pedido = 0;
-        $cantidad_total = 0;
+                    echo "<div class='pedido'>";
+                    echo "<h3>Pedido Nº: " . $pedido_id . "</h3>";
+                    echo "<p class='fecha'>Fecha: " . $fecha_pedido . "</p>";
+                    echo "<p class='metodo_pago'>Método de pago: " . $metodo_pago . "</p>";
 
-        // Consulta para obtener los detalles de cada pedido
-        $sql_detalle = "
-            SELECT dp.cantidad, pr.nombre, pr.precio, pr.imagen 
-            FROM DetallePedido dp
-            JOIN productos pr ON dp.id_producto = pr.id
-            WHERE dp.id_pedido = ?
-        ";
+                    echo "<div class='detalle'>";
+                    while ($stmt_detalle->fetch()) {
+                        $total_pedido += $cantidad * $precio;
+                        $cantidad_total += $cantidad;
 
-        // Prepara y ejecuta la consulta para detalles de cada pedido
-        $stmt_detalle = $conexion->prepare($sql_detalle);
-        $stmt_detalle->bind_param("i", $pedido_id);
-        $stmt_detalle->execute();
-        $stmt_detalle->bind_result($cantidad, $nombre, $precio, $imagen);
+                        echo "<div class='producto-info'>";
+                        echo "<div>Producto: " . $nombre_producto . "</div>";
+                        echo "<div>Cantidad: " . $cantidad . "</div>";
+                        echo "<div>Precio: " . number_format($precio, 2) . "</div>";
 
-        // Mostrar los detalles del pedido y calcular el total
-        echo "<div class='detalle'>";
-        while ($stmt_detalle->fetch()) {
-            $total_pedido += $cantidad * $precio;  // Calcular el total
-            $cantidad_total += $cantidad;  // Contar la cantidad total de productos
+                        // Verificar si existe imagen
+                        if ($imagen) {
+                            echo "<div><img src='data:image/jpeg;base64," . base64_encode($imagen) . "' alt='" . $nombre_producto . "' /></div>";
+                        } else {
+                            echo "<div><img src='img/default.jpg' alt='Imagen no disponible' /></div>";
+                        }
 
-            echo "<div class='producto-info'>";
-            echo "<div>Producto: " . $nombre . "</div>";
-            echo "<div>Cantidad: " . $cantidad . "</div>";
-            echo "<div>Precio: " . number_format($precio, 2) . "</div>";
+                        echo "</div>";
+                    }
+                    echo "</div>";
 
-            // Verificar si la imagen existe y es válida
-            if ($imagen) {
-                // Mostrar la imagen desde la base de datos
-                echo "<div><img src='data:image/jpeg;base64," . base64_encode($imagen) . "' alt='" . $nombre . "' /></div>";
+                    // Si la cantidad total es menor a 7, sumar 30,000 al total
+                    if ($cantidad_total < 7) {
+                        $total_pedido += 30000;
+                    }
+
+                    echo "<p class='total'>Total del pedido: " . number_format($total_pedido, 2) . "</p>";
+                    echo "</div>";
+
+                    $stmt_detalle->close();
+                }
             } else {
-                // Si no hay imagen, mostrar una imagen por defecto
-                echo "<div><img src='img/default.jpg' alt='Imagen no disponible' /></div>";
+                echo "<p class='no-pedidos'>No hay pedidos para este usuario</p>";
             }
-            echo "</div>";
+
+            $stmt_pedidos->close();
+        } else {
+            echo "<p class='no-pedidos'>No se pudo verificar el usuario. Por favor, inicie sesión nuevamente.</p>";
         }
-        echo "</div>";
-
-        // Si la cantidad total es menor a 7, sumar 30,000 al total
-        if ($cantidad_total < 7) {
-            $total_pedido += 30000;
-        }
-
-        echo "<p class='total'>Total del pedido: " . number_format($total_pedido, 2) . "</p>";
-        echo "</div>";
-
-        // Cerrar el statement de detalles
-        $stmt_detalle->close();
-    }
-
-    if (!$hayPedidos) {
-        echo "<p class='no-pedidos'>No hay pedidos para este usuario</p>";
-    }
-
-    // Cerrar el statement de pedidos
-    $stmt_pedidos->close();
-} else {
-    echo "<p class='no-pedidos'>No se pudo verificar el usuario. Por favor, inicie sesión nuevamente.</p>";
-}
-?>
-
+        ?>
 
         <a href="index.php" class="btn-volver">Volver al inicio</a>
 
